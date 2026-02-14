@@ -1,0 +1,45 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #F5F5F7;
+  --surface: #FFFFFF;
+  --primary: #0A0A0A;
+  --accent: #FF3B30;
+  --success: #34C759;
+  --warning: #FFCC00;
+  --danger: #FF3B30;
+  --text-primary: #0A0A0A;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border: #E5E5EA;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }
+.animate-slideUp { animation: slideUp 0.3s ease-out; }

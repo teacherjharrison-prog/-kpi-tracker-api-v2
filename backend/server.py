@@ -108,9 +108,12 @@ def check_feature_access(user: "User", feature: str) -> dict:
     }
 
 # MongoDB connection
-mongo_url = os.environ['MONGO_URL']
+mongo_url = os.environ.get('MONGO_URL')
+if not mongo_url:
+    raise RuntimeError("MONGO_URL environment variable is required")
+db_name = os.environ.get('DB_NAME', 'kpi_tracker')
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[db_name]
 
 app = FastAPI()
 api_router = APIRouter(prefix="/api")

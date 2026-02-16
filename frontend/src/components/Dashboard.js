@@ -77,31 +77,53 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
   return (
     <div data-testid="dashboard">
       {/* Timer Bar - Always Visible */}
-      <div className="card" style={{ marginBottom: '1.5rem', background: '#1a1a1a', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div>
-            <div style={{ fontSize: '0.75rem', opacity: 0.7, marginBottom: '2px' }}>TIME SINCE LAST RESERVATION</div>
-            <div className="font-display" style={{ fontSize: '2.5rem', fontWeight: 900 }}>{formatTime(timerSeconds)}</div>
+      <div className="card" style={{ marginBottom: '1.5rem', background: '#1a1a1a', color: 'white' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+            {/* Current Timer */}
+            <div>
+              <div style={{ fontSize: '0.7rem', opacity: 0.7, marginBottom: '2px' }}>CURRENT</div>
+              <div className="font-display" style={{ fontSize: '2.5rem', fontWeight: 900 }}>{formatTime(timerSeconds)}</div>
+            </div>
+            {/* Last Booking Time */}
+            <div style={{ borderLeft: '1px solid #444', paddingLeft: '1.5rem' }}>
+              <div style={{ fontSize: '0.7rem', opacity: 0.7, marginBottom: '2px' }}>LAST BOOKING</div>
+              <div className="font-display" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
+                {(() => {
+                  const bookings = todayEntry?.bookings || [];
+                  if (bookings.length === 0) return '—';
+                  const lastBooking = bookings[bookings.length - 1];
+                  return `${lastBooking.time_since_last || 0} min`;
+                })()}
+              </div>
+            </div>
+            {/* Period Average */}
+            <div style={{ borderLeft: '1px solid #444', paddingLeft: '1.5rem' }}>
+              <div style={{ fontSize: '0.7rem', opacity: 0.7, marginBottom: '2px' }}>PERIOD AVG</div>
+              <div className="font-display" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
+                {stats?.avg_time?.average || 0} min
+              </div>
+            </div>
+            {isPaused && <span style={{ background: '#F59E0B', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>PAUSED</span>}
           </div>
-          {isPaused && <span style={{ background: '#F59E0B', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>PAUSED</span>}
-        </div>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          {!isTimerRunning ? (
-            <button onClick={startTimer} data-testid="start-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-              <Play size={20} /> START
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            {!isTimerRunning ? (
+              <button onClick={startTimer} data-testid="start-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <Play size={20} /> START
+              </button>
+            ) : isPaused ? (
+              <button onClick={resumeTimer} data-testid="resume-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <Play size={20} /> RESUME
+              </button>
+            ) : (
+              <button onClick={pauseTimer} data-testid="pause-timer-btn" style={{ background: '#F59E0B', color: '#000', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+                <Pause size={20} /> PAUSE
+              </button>
+            )}
+            <button onClick={stopTimer} data-testid="stop-timer-btn" style={{ background: '#FF3B30', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+              <RotateCcw size={20} /> STOP
             </button>
-          ) : isPaused ? (
-            <button onClick={resumeTimer} data-testid="resume-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-              <Play size={20} /> RESUME
-            </button>
-          ) : (
-            <button onClick={pauseTimer} data-testid="pause-timer-btn" style={{ background: '#F59E0B', color: '#000', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-              <Pause size={20} /> PAUSE
-            </button>
-          )}
-          <button onClick={stopTimer} data-testid="stop-timer-btn" style={{ background: '#FF3B30', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
-            <RotateCcw size={20} /> STOP
-          </button>
+          </div>
         </div>
       </div>
 

@@ -114,7 +114,11 @@ def check_feature_access(user: "User", feature: str) -> dict:
     
     feat = FEATURES[feature]
     required = feat["required_plan"]
-    allowed = user.plan == required or required == "free"
+    
+    # Check plan hierarchy: group > pro > free
+    user_level = PLAN_HIERARCHY.get(user.plan, 0)
+    required_level = PLAN_HIERARCHY.get(required, 0)
+    allowed = user_level >= required_level
     
     return {
         "allowed": allowed,

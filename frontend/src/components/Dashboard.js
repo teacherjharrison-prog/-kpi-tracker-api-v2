@@ -203,6 +203,55 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading }) {
           </div>
         </div>
       </div>
+
+      {/* Peso Conversion Section */}
+      <div className="section">
+        <h2 className="section-title"><Banknote size={20} /> Pesos Conversion (Rate: {EXCHANGE_RATE})</h2>
+        <div className="grid grid-3">
+          {/* Daily Pesos */}
+          <div className="card" style={{ background: '#FEF3C7', border: '2px solid #F59E0B' }}>
+            <span className="kpi-label" style={{ color: '#92400E' }}>Today's Earnings</span>
+            <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#78350F' }}>
+              ${(() => {
+                const todayProfit = todayEntry?.bookings?.reduce((sum, b) => sum + (b.profit || 0), 0) || 0;
+                const todaySpins = todayEntry?.spins?.reduce((sum, s) => sum + (s.amount || 0), 0) || 0;
+                const todayMisc = todayEntry?.misc_income?.reduce((sum, m) => sum + (m.amount || 0), 0) || 0;
+                return ((todayProfit + todaySpins + todayMisc) * EXCHANGE_RATE).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              })()} MXN
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#92400E', marginTop: '0.5rem' }}>
+              ${(() => {
+                const todayProfit = todayEntry?.bookings?.reduce((sum, b) => sum + (b.profit || 0), 0) || 0;
+                const todaySpins = todayEntry?.spins?.reduce((sum, s) => sum + (s.amount || 0), 0) || 0;
+                const todayMisc = todayEntry?.misc_income?.reduce((sum, m) => sum + (m.amount || 0), 0) || 0;
+                return (todayProfit + todaySpins + todayMisc).toFixed(2);
+              })()} USD
+            </div>
+          </div>
+
+          {/* Weekly Pesos (current week) */}
+          <div className="card" style={{ background: '#DBEAFE', border: '2px solid #3B82F6' }}>
+            <span className="kpi-label" style={{ color: '#1E40AF' }}>This Week (Sun-Sat)</span>
+            <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#1E3A8A' }}>
+              ${((stats.combined.total / (stats.days_tracked || 1)) * 7 * EXCHANGE_RATE).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#1E40AF', marginTop: '0.5rem' }}>
+              ~${((stats.combined.total / (stats.days_tracked || 1)) * 7).toFixed(2)} USD (est.)
+            </div>
+          </div>
+
+          {/* Pay Period Pesos (with 100 peso fee) */}
+          <div className="card" style={{ background: '#D1FAE5', border: '2px solid #10B981' }}>
+            <span className="kpi-label" style={{ color: '#065F46' }}>Pay Period Total</span>
+            <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#064E3B' }}>
+              ${((stats.combined.total * EXCHANGE_RATE) - PERIOD_FEE_PESOS).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#065F46', marginTop: '0.5rem' }}>
+              ${stats.combined.total.toFixed(2)} USD × {EXCHANGE_RATE} - {PERIOD_FEE_PESOS} fee
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

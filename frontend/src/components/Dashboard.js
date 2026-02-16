@@ -44,6 +44,62 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
   const PERIOD_FEE_PESOS = settings.conversion?.period_fee || 100;
   const customGoals = settings.goals || {};
 
+  // Timer state
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(null);
+
+  // Load timer from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('kpi_timer');
+    if (saved) {
+      const { seconds, running, paused, lastUpdate } = JSON.parse(saved);
+      if (running && !paused) {
+        const elapsed = Math.floor((Date.now() - lastUpdate) / 1000);
+        setTimerSeconds(seconds + elapsed);
+        setIsTimerRunning(true);
+      } else {
+        setTimerSeconds(seconds);
+        setIsPaused(paused);
+        setIsTimerRunning(running);
+      }
+    }
+  }, []);
+
+  // Timer tick
+  useEffect(() => {
+    if (isTimerRunning && !isPaused) {
+      timerRef.current = setInterval(() => {
+        setTimerSeconds(prev => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [isTimerRunning, isPaused]);
+
+  // Save timer state
+  useEffect(() => {
+    localStorage.setItem('kpi_timer', JSON.stringify({
+      seconds: timerSeconds,
+      running: isTimerRunning,
+      paused: isPaused,
+      lastUpdate: Date.now()
+    }));
+  }, [timerSeconds, isTimerRunning, isPaused]);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const startTimer = () => { setIsTimerRunning(true); setIsPaused(false); };
+  const pauseTimer = () => { setIsPaused(true); };
+  const resumeTimer = () => { setIsPaused(false); };
+  const stopTimer = () => { setTimerSeconds(0); setIsTimerRunning(false); setIsPaused(false); };
+
   if (loading) {
     return (
       <div>

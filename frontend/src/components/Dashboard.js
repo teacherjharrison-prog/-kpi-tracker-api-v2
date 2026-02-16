@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { TrendingUp, Phone, Calendar, DollarSign, Gift, Clock, Target, Banknote, Play, Pause, RotateCcw } from 'lucide-react';
 import { getStoredSettings } from './Settings';
 

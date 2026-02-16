@@ -233,7 +233,7 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
       <div className="section">
         <h2 className="section-title"><Banknote size={20} /> Pesos Conversion (Rate: {EXCHANGE_RATE})</h2>
         <div className="grid grid-3">
-          {/* Daily Pesos */}
+          {/* Daily Pesos - Actual today's earnings */}
           <div className="card" style={{ background: '#FEF3C7', border: '2px solid #F59E0B' }}>
             <span className="kpi-label" style={{ color: '#92400E' }}>Today's Earnings</span>
             <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#78350F' }}>
@@ -254,25 +254,25 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
             </div>
           </div>
 
-          {/* Weekly Pesos (current week) */}
+          {/* Pay Period Pesos - Actual period total */}
           <div className="card" style={{ background: '#DBEAFE', border: '2px solid #3B82F6' }}>
-            <span className="kpi-label" style={{ color: '#1E40AF' }}>This Week (Sun-Sat)</span>
+            <span className="kpi-label" style={{ color: '#1E40AF' }}>Pay Period Total</span>
             <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#1E3A8A' }}>
-              ${((stats.combined.total / (stats.days_tracked || 1)) * 7 * EXCHANGE_RATE).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN
+              ${(stats.combined.total * EXCHANGE_RATE).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN
             </div>
             <div style={{ fontSize: '0.875rem', color: '#1E40AF', marginTop: '0.5rem' }}>
-              ~${((stats.combined.total / (stats.days_tracked || 1)) * 7).toFixed(2)} USD (est.)
+              ${stats.combined.total.toFixed(2)} USD
             </div>
           </div>
 
-          {/* Pay Period Pesos (with 100 peso fee) */}
+          {/* Pay Period After Fee */}
           <div className="card" style={{ background: '#D1FAE5', border: '2px solid #10B981' }}>
-            <span className="kpi-label" style={{ color: '#065F46' }}>Pay Period Total</span>
+            <span className="kpi-label" style={{ color: '#065F46' }}>After {PERIOD_FEE_PESOS} Peso Fee</span>
             <div className="font-display" style={{ fontSize: '2rem', fontWeight: 900, color: '#064E3B' }}>
               ${((stats.combined.total * EXCHANGE_RATE) - PERIOD_FEE_PESOS).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MXN
             </div>
             <div style={{ fontSize: '0.875rem', color: '#065F46', marginTop: '0.5rem' }}>
-              ${stats.combined.total.toFixed(2)} USD × {EXCHANGE_RATE} - {PERIOD_FEE_PESOS} fee
+              Net after fee deduction
             </div>
           </div>
         </div>

@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 CURRENT_USER_ID = "user_001"
-CURRENT_USER_PLAN = "free"  # free | pro - switch to test
+CURRENT_USER_PLAN = "pro"  # free | pro - All features activated
 
 # =============================================================================
 # FEATURE REGISTRY

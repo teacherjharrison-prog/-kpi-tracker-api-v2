@@ -56,9 +56,8 @@ function DataEntry({ todayEntry, onUpdate, apiUrl, timer }) {
         })
       });
       setBooking({ profit: '', is_prepaid: false, has_refund_protection: false, time_since_last: '' });
-      // Reset timer after booking
-      resetTimer();
-      startTimer(); // Auto-start for next booking
+      // Reset timer and auto-start for next booking
+      if (resetAndStartTimer) resetAndStartTimer();
       showSuccess('booking');
       onUpdate();
     } catch (err) {

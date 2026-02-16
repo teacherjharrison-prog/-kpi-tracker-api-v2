@@ -90,7 +90,8 @@ function App() {
             todayEntry={todayEntry} 
             periodInfo={periodInfo}
             goals={goals}
-            loading={loading} 
+            loading={loading}
+            customSettings={customSettings}
           />
         )}
         {activeTab === 'add' && (
@@ -102,6 +103,11 @@ function App() {
         )}
         {activeTab === 'history' && (
           <History apiUrl={API_URL} />
+        )}
+        {activeTab === 'settings' && (
+          <Settings 
+            onSettingsChange={(newSettings) => setCustomSettings(newSettings)}
+          />
         )}
       </main>
     </div>

@@ -161,7 +161,7 @@ function DataEntry({ todayEntry, onUpdate, apiUrl, timer }) {
               </button>
             )}
             <button 
-              onClick={resetTimer}
+              onClick={stopTimer}
               style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.75rem', borderRadius: '9999px', cursor: 'pointer' }}
               data-testid="reset-timer-btn"
             >

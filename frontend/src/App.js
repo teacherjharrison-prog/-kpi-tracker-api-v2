@@ -155,6 +155,7 @@ function App() {
             goals={goals}
             loading={loading}
             customSettings={customSettings}
+            timer={timerProps}
           />
         )}
         {activeTab === 'add' && (
@@ -162,6 +163,7 @@ function App() {
             todayEntry={todayEntry} 
             onUpdate={fetchData}
             apiUrl={API_URL}
+            timer={timerProps}
           />
         )}
         {activeTab === 'history' && (

@@ -22,10 +22,11 @@ const KPICard = ({ label, value, goal, progress, status, icon: Icon, prefix = ''
         />
       </div>
       <div className="kpi-meta">
-        <span>{progress.toFixed(1)}% of {prefix}{goal?.toLocaleString()}</span>
-        <span className={`badge ${status}`} style={{ marginLeft: '0.5rem' }}>
-          {status === 'on_track' ? '✓ On Track' : status === 'warning' ? '⚡ Close' : '⚠ Behind'}
-        </span>
+        {value >= goal ? (
+          <span className={`badge on_track`}>✓ Goal reached!</span>
+        ) : (
+          <span>{prefix}{(goal - value).toLocaleString()} more needed</span>
+        )}
       </div>
     </div>
   );

@@ -125,7 +125,7 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading }) {
       {/* Secondary Stats */}
       <div className="section">
         <h2 className="section-title"><TrendingUp size={20} /> Performance</h2>
-        <div className="grid grid-3">
+        <div className="grid grid-4">
           <div className="card kpi-card">
             <span className="kpi-label">Combined Earnings</span>
             <div className="kpi-value">${stats.combined.total.toLocaleString()}</div>
@@ -136,12 +136,36 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading }) {
               />
             </div>
             <div className="kpi-meta">
-            {stats.combined.total >= stats.combined.goal ? (
-              <span className={`badge on_track`}>✓ Goal reached!</span>
-            ) : (
-              <span>${(stats.combined.goal - stats.combined.total).toLocaleString()} more needed</span>
-            )}
+              {stats.combined.total >= stats.combined.goal ? (
+                <span className={`badge on_track`}>✓ Goal reached!</span>
+              ) : (
+                <span>${(stats.combined.goal - stats.combined.total).toLocaleString()} more needed</span>
+              )}
+            </div>
           </div>
+
+          {/* Spin Progress - Only Prepaid Count */}
+          <div className="card kpi-card" style={{ background: '#FEF3C7', border: '2px solid #F59E0B' }}>
+            <span className="kpi-label" style={{ color: '#92400E' }}>Spin Progress</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+              <span className="kpi-value" style={{ color: '#78350F' }}>{stats.reservations.prepaid_count || 0}</span>
+              <span style={{ fontSize: '1rem', color: '#92400E' }}>prepaid</span>
+            </div>
+            <div className="progress-bar" style={{ background: '#FDE68A' }}>
+              <div 
+                className="progress-fill"
+                style={{ 
+                  width: `${((stats.reservations.prepaid_count || 0) % 4) / 4 * 100}%`,
+                  background: '#F59E0B'
+                }}
+              />
+            </div>
+            <div className="kpi-meta" style={{ color: '#92400E' }}>
+              {4 - ((stats.reservations.prepaid_count || 0) % 4)} more prepaid → next spin
+              {((stats.reservations.prepaid_count || 0) % 16) >= 12 && (
+                <span className="badge" style={{ background: '#7C3AED', color: 'white', marginLeft: '0.5rem' }}>MEGA next!</span>
+              )}
+            </div>
           </div>
 
           <div className="card kpi-card">

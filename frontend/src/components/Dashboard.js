@@ -133,8 +133,12 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading }) {
               />
             </div>
             <div className="kpi-meta">
-              Goal: ${stats.combined.goal.toLocaleString()}
-            </div>
+            {stats.combined.total >= stats.combined.goal ? (
+              <span className={`badge on_track`}>✓ Goal reached!</span>
+            ) : (
+              <span>${(stats.combined.goal - stats.combined.total).toLocaleString()} more needed</span>
+            )}
+          </div>
           </div>
 
           <div className="card kpi-card">

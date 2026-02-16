@@ -16,6 +16,7 @@ function App() {
   const [goals, setGoals] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [customSettings, setCustomSettings] = useState(getStoredSettings());
 
   const fetchData = async () => {
     setLoading(true);

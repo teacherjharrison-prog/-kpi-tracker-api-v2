@@ -121,6 +121,10 @@ function DataEntry({ todayEntry, onUpdate, apiUrl }) {
   const addBooking = async () => {
     if (!booking.profit) return alert('Enter profit amount');
     setLoading({ ...loading, booking: true });
+    
+    // Use timer value for time_since_last (convert to minutes)
+    const timeMinutes = Math.floor(timerSeconds / 60);
+    
     try {
       await fetch(`${apiUrl}/api/entries/${today}/bookings`, {
         method: 'POST',
@@ -129,10 +133,13 @@ function DataEntry({ todayEntry, onUpdate, apiUrl }) {
           profit: parseFloat(booking.profit),
           is_prepaid: booking.is_prepaid,
           has_refund_protection: booking.has_refund_protection,
-          time_since_last: parseInt(booking.time_since_last) || 0
+          time_since_last: booking.time_since_last ? parseInt(booking.time_since_last) : timeMinutes
         })
       });
       setBooking({ profit: '', is_prepaid: false, has_refund_protection: false, time_since_last: '' });
+      // Reset timer after booking
+      resetTimer();
+      startTimer(); // Auto-start for next booking
       showSuccess('booking');
       onUpdate();
     } catch (err) {

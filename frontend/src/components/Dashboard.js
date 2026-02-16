@@ -123,6 +123,35 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
 
   return (
     <div data-testid="dashboard">
+      {/* Timer Bar - Always Visible */}
+      <div className="card" style={{ marginBottom: '1.5rem', background: '#1a1a1a', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div>
+            <div style={{ fontSize: '0.75rem', opacity: 0.7, marginBottom: '2px' }}>TIME SINCE LAST RESERVATION</div>
+            <div className="font-display" style={{ fontSize: '2.5rem', fontWeight: 900 }}>{formatTime(timerSeconds)}</div>
+          </div>
+          {isPaused && <span style={{ background: '#F59E0B', color: '#000', padding: '4px 12px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700 }}>PAUSED</span>}
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          {!isTimerRunning ? (
+            <button onClick={startTimer} data-testid="start-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+              <Play size={20} /> START
+            </button>
+          ) : isPaused ? (
+            <button onClick={resumeTimer} data-testid="resume-timer-btn" style={{ background: '#34C759', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+              <Play size={20} /> RESUME
+            </button>
+          ) : (
+            <button onClick={pauseTimer} data-testid="pause-timer-btn" style={{ background: '#F59E0B', color: '#000', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+              <Pause size={20} /> PAUSE
+            </button>
+          )}
+          <button onClick={stopTimer} data-testid="stop-timer-btn" style={{ background: '#FF3B30', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '30px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}>
+            <RotateCcw size={20} /> STOP
+          </button>
+        </div>
+      </div>
+
       {/* Period Info Banner */}
       <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--primary)', color: 'white' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>

@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 CURRENT_USER_ID = "user_001"
-CURRENT_USER_PLAN = "pro"  # free | pro - All features activated
+CURRENT_USER_PLAN = "group"  # free | pro | group - Group has ALL features
 
 # =============================================================================
 # FEATURE REGISTRY

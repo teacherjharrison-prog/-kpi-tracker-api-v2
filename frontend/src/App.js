@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Dashboard from './components/Dashboard';
 import DataEntry from './components/DataEntry';
@@ -17,6 +17,69 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [customSettings, setCustomSettings] = useState(getStoredSettings());
+
+  // SHARED TIMER STATE - lives in App, passed to children
+  const [timerSeconds, setTimerSeconds] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const timerRef = useRef(null);
+
+  // Load timer from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('kpi_timer');
+    if (saved) {
+      const { seconds, running, paused, lastUpdate } = JSON.parse(saved);
+      if (running && !paused) {
+        const elapsed = Math.floor((Date.now() - lastUpdate) / 1000);
+        setTimerSeconds(seconds + elapsed);
+        setIsTimerRunning(true);
+      } else {
+        setTimerSeconds(seconds);
+        setIsPaused(paused);
+        setIsTimerRunning(running);
+      }
+    }
+  }, []);
+
+  // Timer tick
+  useEffect(() => {
+    if (isTimerRunning && !isPaused) {
+      timerRef.current = setInterval(() => {
+        setTimerSeconds(prev => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [isTimerRunning, isPaused]);
+
+  // Save timer state to localStorage
+  useEffect(() => {
+    localStorage.setItem('kpi_timer', JSON.stringify({
+      seconds: timerSeconds,
+      running: isTimerRunning,
+      paused: isPaused,
+      lastUpdate: Date.now()
+    }));
+  }, [timerSeconds, isTimerRunning, isPaused]);
+
+  // Timer controls
+  const startTimer = () => { setIsTimerRunning(true); setIsPaused(false); };
+  const pauseTimer = () => { setIsPaused(true); };
+  const resumeTimer = () => { setIsPaused(false); };
+  const stopTimer = () => { setTimerSeconds(0); setIsTimerRunning(false); setIsPaused(false); };
+  const resetAndStartTimer = () => { setTimerSeconds(0); setIsTimerRunning(true); setIsPaused(false); };
+
+  const timerProps = {
+    timerSeconds,
+    isTimerRunning,
+    isPaused,
+    startTimer,
+    pauseTimer,
+    resumeTimer,
+    stopTimer,
+    resetAndStartTimer,
+  };
 
   const fetchData = async () => {
     setLoading(true);

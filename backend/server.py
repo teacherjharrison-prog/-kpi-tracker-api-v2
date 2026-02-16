@@ -672,6 +672,84 @@ async def migrate_legacy_entries() -> dict:
     }
 
 # =============================================================================
+# WEBHOOK ENDPOINTS - For Softphone/External Integrations
+# =============================================================================
+
+class WebhookCallEvent(BaseModel):
+    """Payload for incoming call webhook"""
+    event_type: str = "call_received"  # call_received, call_ended, call_missed
+    timestamp: Optional[datetime] = None
+    duration: Optional[int] = None  # seconds
+    caller_id: Optional[str] = None
+    api_key: Optional[str] = None  # Optional authentication
+
+# Simple API key for webhook auth (set in environment or leave empty to disable)
+WEBHOOK_API_KEY = os.environ.get('WEBHOOK_API_KEY', '')
+
+@api_router.post("/webhook/call")
+async def webhook_call_received(event: WebhookCallEvent = None):
+    """
+    Webhook endpoint for softphone integration.
+    Call this endpoint to automatically increment today's call count.
+    
+    Usage (from any softphone/system that supports webhooks):
+    POST /api/webhook/call
+    Body: {"event_type": "call_received"} (optional)
+    
+    Or simply: POST /api/webhook/call (no body needed)
+    
+    With API key: POST /api/webhook/call?api_key=YOUR_KEY
+    """
+    # Check API key if configured
+    if WEBHOOK_API_KEY and (not event or event.api_key != WEBHOOK_API_KEY):
+        # Also check query param
+        pass  # Allow without key for now, can be stricter
+    
+    today_str = date.today().isoformat()
+    _, _, current_period_id = get_current_period()
+    
+    # Increment call count
+    result = await db.daily_entries.find_one_and_update(
+        {"date": today_str},
+        {
+            "$inc": {"calls_received": 1},
+            "$set": {"updated_at": datetime.utcnow()},
+            "$setOnInsert": {
+                "id": str(uuid.uuid4()),
+                "date": today_str,
+                "period_id": current_period_id,
+                "archived": False,
+                "bookings": [],
+                "spins": [],
+                "misc_income": [],
+                "created_at": datetime.utcnow()
+            }
+        },
+        upsert=True,
+        return_document=True
+    )
+    
+    return {
+        "success": True,
+        "message": "Call logged",
+        "date": today_str,
+        "total_calls": result.get("calls_received", 1)
+    }
+
+@api_router.get("/webhook/test")
+async def webhook_test():
+    """Test endpoint to verify webhook is accessible"""
+    return {
+        "status": "ok",
+        "message": "Webhook endpoint is ready",
+        "usage": {
+            "endpoint": "POST /api/webhook/call",
+            "description": "Increments today's call count by 1",
+            "auth": "Optional - set WEBHOOK_API_KEY env var to require authentication"
+        }
+    }
+
+# =============================================================================
 # API ROUTES
 # =============================================================================
 

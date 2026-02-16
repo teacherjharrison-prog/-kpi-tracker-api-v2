@@ -37,3 +37,7 @@ test_reports/
 model.patch
 backend_test.py
 test_result.md
+-e 
+# Environment files
+*.env
+*.env.*

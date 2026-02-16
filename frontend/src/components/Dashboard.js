@@ -37,7 +37,13 @@ const Skeleton = ({ height = 120 }) => (
   <div className="card skeleton" style={{ height }} />
 );
 
-function Dashboard({ stats, todayEntry, periodInfo, goals, loading }) {
+function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettings }) {
+  // Get custom settings or defaults
+  const settings = customSettings || getStoredSettings();
+  const EXCHANGE_RATE = settings.conversion?.exchange_rate || 15.86;
+  const PERIOD_FEE_PESOS = settings.conversion?.period_fee || 100;
+  const customGoals = settings.goals || {};
+
   if (loading) {
     return (
       <div>

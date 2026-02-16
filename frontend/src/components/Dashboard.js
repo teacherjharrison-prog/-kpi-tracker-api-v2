@@ -1,8 +1,6 @@
 import React from 'react';
 import { TrendingUp, Phone, Calendar, DollarSign, Gift, Clock, Target, Banknote } from 'lucide-react';
-
-const EXCHANGE_RATE = 15.86; // USD to MXN
-const PERIOD_FEE_PESOS = 100; // Fee at end of period
+import { getStoredSettings } from './Settings';
 
 const KPICard = ({ label, value, goal, progress, status, icon: Icon, prefix = '' }) => {
   const getProgressColor = () => {

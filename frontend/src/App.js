@@ -3,7 +3,8 @@ import './App.css';
 import Dashboard from './components/Dashboard';
 import DataEntry from './components/DataEntry';
 import History from './components/History';
-import { LayoutDashboard, Plus, Clock } from 'lucide-react';
+import Settings, { getStoredSettings } from './components/Settings';
+import { LayoutDashboard, Plus, Clock, Settings as SettingsIcon } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_BACKEND_URL || '';
 

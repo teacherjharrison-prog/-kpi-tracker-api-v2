@@ -701,10 +701,10 @@ async def check_feature(feature: str):
 @api_router.get("/user/features")
 async def get_all_features():
     user = get_current_user_sync()
-    features = ["export_data", "custom_goals", "historical_reports", "multiple_periods"]
+    all_features = list(FEATURES.keys())
     return {
         "plan": user.plan,
-        "features": {f: check_feature_access(user, f) for f in features}
+        "features": {f: check_feature_access(user, f) for f in all_features}
     }
 
 @api_router.get("/goals")

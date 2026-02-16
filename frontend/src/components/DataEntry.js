@@ -1,104 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Phone, DollarSign, Gift, Plus, Check, Loader, Play, Pause, RotateCcw, Timer } from 'lucide-react';
 
-function DataEntry({ todayEntry, onUpdate, apiUrl }) {
+function DataEntry({ todayEntry, onUpdate, apiUrl, timer }) {
   const today = new Date().toISOString().split('T')[0];
   const [loading, setLoading] = useState({});
   const [success, setSuccess] = useState({});
   
-  // Timer state
-  const [timerSeconds, setTimerSeconds] = useState(0);
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef(null);
+  // Timer from props (shared with App)
+  const { timerSeconds, isTimerRunning, isPaused, startTimer, pauseTimer, resumeTimer, stopTimer, resetAndStartTimer } = timer || {};
   
   const [calls, setCalls] = useState(todayEntry?.calls_received || 0);
   const [booking, setBooking] = useState({ profit: '', is_prepaid: false, has_refund_protection: false, time_since_last: '' });
   const [spin, setSpin] = useState({ amount: '', is_mega: false, booking_number: '' });
   const [misc, setMisc] = useState({ amount: '', source: 'request_lead', description: '' });
 
-  // Load timer state from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('kpi_timer');
-    if (saved) {
-      const { seconds, running, paused, lastUpdate } = JSON.parse(saved);
-      if (running && !paused) {
-        // Add elapsed time since last update
-        const elapsed = Math.floor((Date.now() - lastUpdate) / 1000);
-        setTimerSeconds(seconds + elapsed);
-        setIsTimerRunning(true);
-      } else {
-        setTimerSeconds(seconds);
-        setIsPaused(paused);
-      }
-    }
-  }, []);
-
-  // Timer tick
-  useEffect(() => {
-    if (isTimerRunning && !isPaused) {
-      timerRef.current = setInterval(() => {
-        setTimerSeconds(prev => prev + 1);
-      }, 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [isTimerRunning, isPaused]);
-
-  // Save timer state
-  useEffect(() => {
-    localStorage.setItem('kpi_timer', JSON.stringify({
-      seconds: timerSeconds,
-      running: isTimerRunning,
-      paused: isPaused,
-      lastUpdate: Date.now()
-    }));
-  }, [timerSeconds, isTimerRunning, isPaused]);
-
-  // Check for week reset (Sunday 12:00 AM)
-  useEffect(() => {
-    const checkWeekReset = () => {
-      const now = new Date();
-      const lastReset = localStorage.getItem('kpi_week_reset');
-      const lastResetDate = lastReset ? new Date(lastReset) : null;
-      
-      // Find last Sunday at midnight
-      const lastSunday = new Date(now);
-      lastSunday.setDate(now.getDate() - now.getDay());
-      lastSunday.setHours(0, 0, 0, 0);
-      
-      if (!lastResetDate || lastResetDate < lastSunday) {
-        // New week started - could trigger reset logic here
-        localStorage.setItem('kpi_week_reset', lastSunday.toISOString());
-      }
-    };
-    checkWeekReset();
-  }, []);
-
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const startTimer = () => {
-    setIsTimerRunning(true);
-    setIsPaused(false);
-  };
-
-  const pauseTimer = () => {
-    setIsPaused(true);
-  };
-
-  const resumeTimer = () => {
-    setIsPaused(false);
-  };
-
-  const resetTimer = () => {
-    setTimerSeconds(0);
-    setIsTimerRunning(false);
-    setIsPaused(false);
   };
 
   const showSuccess = (key) => {

@@ -689,21 +689,16 @@ WEBHOOK_API_KEY = os.environ.get('WEBHOOK_API_KEY', '')
 @api_router.post("/webhook/call")
 async def webhook_call_received(event: WebhookCallEvent = None):
     """
-    Webhook endpoint for softphone integration.
-    Call this endpoint to automatically increment today's call count.
-    
-    Usage (from any softphone/system that supports webhooks):
-    POST /api/webhook/call
-    Body: {"event_type": "call_received"} (optional)
-    
-    Or simply: POST /api/webhook/call (no body needed)
-    
-    With API key: POST /api/webhook/call?api_key=YOUR_KEY
+    Webhook endpoint for softphone integration (Pro/Group plan only).
+    Automatically increments today's call count.
     """
-    # Check API key if configured
-    if WEBHOOK_API_KEY and (not event or event.api_key != WEBHOOK_API_KEY):
-        # Also check query param
-        pass  # Allow without key for now, can be stricter
+    # Check plan - only Pro or Group can use webhook
+    user = get_current_user_sync()
+    if user.plan not in ["pro", "group"]:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": "Webhook requires Pro or Group plan", "current_plan": user.plan}
+        )
     
     today_str = date.today().isoformat()
     _, _, current_period_id = get_current_period()

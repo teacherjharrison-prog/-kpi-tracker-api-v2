@@ -85,48 +85,40 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
         </div>
       </div>
 
-      {/* Main KPIs */}
+      {/* Today's Activity - TOP */}
       <div className="section">
-        <h2 className="section-title"><Target size={20} /> Biweekly Progress</h2>
-        <div className="grid grid-4">
-          <KPICard 
-            label="Calls" 
-            value={stats.calls.total} 
-            goal={stats.calls.goal}
-            progress={stats.calls.progress_percent}
-            status={stats.calls.status}
-            icon={Phone}
-          />
-          <KPICard 
-            label="Reservations" 
-            value={stats.reservations.total} 
-            goal={stats.reservations.goal}
-            progress={stats.reservations.progress_percent}
-            status={stats.reservations.status}
-            icon={Calendar}
-          />
-          <KPICard 
-            label="Profit" 
-            value={stats.profit.total} 
-            goal={stats.profit.goal}
-            progress={stats.profit.progress_percent}
-            status={stats.profit.status}
-            icon={DollarSign}
-            prefix="$"
-          />
-          <KPICard 
-            label="Spins" 
-            value={stats.spins.total} 
-            goal={stats.spins.goal}
-            progress={stats.spins.progress_percent}
-            status={stats.spins.status}
-            icon={Gift}
-            prefix="$"
-          />
+        <h2 className="section-title"><Clock size={20} /> Today's Activity</h2>
+        <div className="card">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem' }}>
+            <div>
+              <div className="kpi-label">Calls</div>
+              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
+                {todayEntry?.calls_received || 0}
+              </div>
+            </div>
+            <div>
+              <div className="kpi-label">Bookings</div>
+              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
+                {todayEntry?.bookings?.length || 0}
+              </div>
+            </div>
+            <div>
+              <div className="kpi-label">Spins</div>
+              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
+                {todayEntry?.spins?.length || 0}
+              </div>
+            </div>
+            <div>
+              <div className="kpi-label">Misc Income</div>
+              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
+                {todayEntry?.misc_income?.length || 0}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Secondary Stats */}
+      {/* Performance - TOP */}
       <div className="section">
         <h2 className="section-title"><TrendingUp size={20} /> Performance</h2>
         <div className="grid grid-4">
@@ -199,39 +191,6 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
         </div>
       </div>
 
-      {/* Today's Activity */}
-      <div className="section">
-        <h2 className="section-title"><Clock size={20} /> Today's Activity</h2>
-        <div className="card">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1.5rem' }}>
-            <div>
-              <div className="kpi-label">Calls</div>
-              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
-                {todayEntry?.calls_received || 0}
-              </div>
-            </div>
-            <div>
-              <div className="kpi-label">Bookings</div>
-              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
-                {todayEntry?.bookings?.length || 0}
-              </div>
-            </div>
-            <div>
-              <div className="kpi-label">Spins</div>
-              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
-                {todayEntry?.spins?.length || 0}
-              </div>
-            </div>
-            <div>
-              <div className="kpi-label">Misc Income</div>
-              <div className="font-display" style={{ fontSize: '2rem', fontWeight: 700 }}>
-                {todayEntry?.misc_income?.length || 0}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Peso Conversion Section */}
       <div className="section">
         <h2 className="section-title"><Banknote size={20} /> Pesos Conversion (Rate: {EXCHANGE_RATE})</h2>
@@ -278,6 +237,47 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
               ${stats.combined.total.toFixed(2)} USD × {EXCHANGE_RATE} - {PERIOD_FEE_PESOS} fee
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Biweekly Progress - BOTTOM */}
+      <div className="section">
+        <h2 className="section-title"><Target size={20} /> Biweekly Progress</h2>
+        <div className="grid grid-4">
+          <KPICard 
+            label="Calls" 
+            value={stats.calls.total} 
+            goal={stats.calls.goal}
+            progress={stats.calls.progress_percent}
+            status={stats.calls.status}
+            icon={Phone}
+          />
+          <KPICard 
+            label="Reservations" 
+            value={stats.reservations.total} 
+            goal={stats.reservations.goal}
+            progress={stats.reservations.progress_percent}
+            status={stats.reservations.status}
+            icon={Calendar}
+          />
+          <KPICard 
+            label="Profit" 
+            value={stats.profit.total} 
+            goal={stats.profit.goal}
+            progress={stats.profit.progress_percent}
+            status={stats.profit.status}
+            icon={DollarSign}
+            prefix="$"
+          />
+          <KPICard 
+            label="Spins" 
+            value={stats.spins.total} 
+            goal={stats.spins.goal}
+            progress={stats.spins.progress_percent}
+            status={stats.spins.status}
+            icon={Gift}
+            prefix="$"
+          />
         </div>
       </div>
     </div>

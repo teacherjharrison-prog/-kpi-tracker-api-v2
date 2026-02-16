@@ -220,7 +220,7 @@ function Dashboard({ stats, todayEntry, periodInfo, goals, loading, customSettin
               <span style={{ fontSize: '1rem', fontWeight: 500 }}>min</span>
             </div>
             <div className="kpi-meta">
-              Goal: ≤{stats.avg_time.goal} min
+              Actual avg • Goal: ≤{stats.avg_time.goal} min
               <span className={`badge ${stats.avg_time.status}`} style={{ marginLeft: '0.5rem' }}>
                 {stats.avg_time.on_track ? '✓' : '⚠'}
               </span>

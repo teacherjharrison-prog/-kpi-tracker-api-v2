@@ -60,7 +60,25 @@ FEATURES = {
         "description": "Compare across custom date ranges",
         "required_plan": "pro",
     },
+    "team_dashboard": {
+        "label": "Team Dashboard",
+        "description": "View team-wide KPI stats",
+        "required_plan": "group",
+    },
+    "advanced_analytics": {
+        "label": "Advanced Analytics",
+        "description": "Detailed performance insights and trends",
+        "required_plan": "group",
+    },
+    "priority_support": {
+        "label": "Priority Support",
+        "description": "24/7 priority customer support",
+        "required_plan": "group",
+    },
 }
+
+# Plan hierarchy: group > pro > free
+PLAN_HIERARCHY = {"free": 0, "pro": 1, "group": 2}
 
 class DenialReason:
     PLAN_LIMIT = "plan_limit"

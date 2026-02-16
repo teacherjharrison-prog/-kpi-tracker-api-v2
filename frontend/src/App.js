@@ -52,6 +52,7 @@ function App() {
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'add', label: 'Add Data', icon: Plus },
     { id: 'history', label: 'History', icon: Clock },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
 
   return (

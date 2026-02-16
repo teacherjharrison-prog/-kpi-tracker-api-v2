@@ -204,6 +204,55 @@ function DataEntry({ todayEntry, onUpdate, apiUrl }) {
         Add Data for {today}
       </h2>
 
+      {/* Timer Section */}
+      <div className="card" style={{ marginBottom: '1.5rem', background: 'var(--primary)', color: 'white' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <div style={{ fontSize: '0.875rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Timer size={16} /> Time Since Last Reservation
+            </div>
+            <div className="font-display" style={{ fontSize: '3rem', fontWeight: 900 }}>
+              {formatTime(timerSeconds)}
+            </div>
+            {isPaused && <span style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,0.2)', padding: '0.25rem 0.5rem', borderRadius: '4px' }}>PAUSED</span>}
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            {!isTimerRunning ? (
+              <button 
+                onClick={startTimer}
+                style={{ background: 'white', color: 'var(--primary)', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '9999px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                data-testid="start-timer-btn"
+              >
+                <Play size={16} /> Start
+              </button>
+            ) : isPaused ? (
+              <button 
+                onClick={resumeTimer}
+                style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '9999px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                data-testid="resume-timer-btn"
+              >
+                <Play size={16} /> Resume
+              </button>
+            ) : (
+              <button 
+                onClick={pauseTimer}
+                style={{ background: 'var(--warning)', color: 'var(--primary)', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '9999px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                data-testid="pause-timer-btn"
+              >
+                <Pause size={16} /> Pause
+              </button>
+            )}
+            <button 
+              onClick={resetTimer}
+              style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.75rem', borderRadius: '9999px', cursor: 'pointer' }}
+              data-testid="reset-timer-btn"
+            >
+              <RotateCcw size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-2" style={{ gap: '1.5rem' }}>
         {/* Calls */}
         <div className="card">

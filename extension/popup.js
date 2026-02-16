@@ -1,12 +1,14 @@
 const $ = id => document.getElementById(id);
 
+// Default to the live preview URL
+const DEFAULT_URL = 'https://fea3d782-ac20-45ec-90e1-61d72ee06326.preview.emergentagent.com';
 let API_URL = '';
 
 async function loadSettings() {
   const data = await chrome.storage.local.get(['apiUrl']);
-  API_URL = data.apiUrl || '';
+  API_URL = data.apiUrl || DEFAULT_URL;
   $('apiUrl').value = API_URL;
-  if (API_URL) fetchStats();
+  fetchStats();
 }
 
 async function saveSettings() {

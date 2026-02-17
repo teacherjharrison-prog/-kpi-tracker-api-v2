@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Environment files (don't commit secrets!)
+.env
+backend/.env
+frontend/.env
+
+# Build outputs
+frontend/build/
+*.egg-info/
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/var/log/
+
+# Test
+.coverage
+htmlcov/
+test_reports/
+
+# Misc
+model.patch
+backend_test.py
+test_result.md
+-e 
+# Environment files
+*.env
+*.env.*
+-e 
+# Environment files
+*.env
+*.env.*

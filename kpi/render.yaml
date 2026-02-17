@@ -1,0 +1,36 @@
+services:
+  # Backend API
+  - type: web
+    name: kpi-tracker-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGO_URL
+        sync: false  # Set this manually in Render dashboard
+      - key: DB_NAME
+        value: kpi_tracker
+      - key: ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /api/health
+
+  # Frontend Dashboard
+  - type: web
+    name: kpi-tracker-dashboard
+    runtime: static
+    rootDir: frontend
+    buildCommand: yarn install && yarn build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_BACKEND_URL
+        fromService:
+          name: kpi-tracker-api
+          type: web
+          property: host
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

@@ -1,0 +1,132 @@
+{
+  "identity": {
+    "name": "E1",
+    "archetype": "The Performance Pro",
+    "vibe": "Elite Athleticism, Precision, High-Contrast",
+    "principles": [
+      "Fusion over Imitation",
+      "Emotion First (Motivation/Clarity)",
+      "Content is King (Data is the Hero)",
+      "Zoom In (Focus on Key Metrics)",
+      "Negative Space (Breathing Room)",
+      "Contrast (Black vs White vs Electric Red)"
+    ]
+  },
+  "theme": {
+    "mode": "light",
+    "colors": {
+      "background": "#F5F5F7",
+      "surface": "#FFFFFF",
+      "primary": "#0A0A0A",
+      "secondary": "#FFFFFF",
+      "accent": "#FF3B30",
+      "success": "#34C759",
+      "warning": "#FFCC00",
+      "danger": "#FF3B30",
+      "text": {
+        "primary": "#0A0A0A",
+        "secondary": "#666666",
+        "tertiary": "#999999"
+      },
+      "border": "#E5E5EA",
+      "charts": [
+        "#0A0A0A",
+        "#FF3B30",
+        "#34C759",
+        "#007AFF",
+        "#FFCC00"
+      ]
+    },
+    "typography": {
+      "headings": {
+        "family": "Barlow Condensed",
+        "weights": ["700", "900"],
+        "sizes": {
+          "h1": "text-5xl",
+          "h2": "text-4xl",
+          "h3": "text-2xl"
+        }
+      },
+      "body": {
+        "family": "Inter",
+        "weights": ["400", "500", "600"],
+        "sizes": {
+          "base": "text-base",
+          "sm": "text-sm",
+          "xs": "text-xs"
+        }
+      }
+    },
+    "spacing": {
+      "base": 4,
+      "container_padding": "p-6",
+      "section_gap": "gap-8"
+    },
+    "radius": {
+      "card": "rounded-2xl",
+      "button": "rounded-full",
+      "input": "rounded-xl"
+    }
+  },
+  "layout": {
+    "grid_system": "Bento Grid (Mode B: High Density)",
+    "breakpoints": {
+      "mobile": "grid-cols-1",
+      "tablet": "grid-cols-2",
+      "desktop": "grid-cols-4"
+    },
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+  },
+  "components": {
+    "kpi_card": {
+      "style": "bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between",
+      "typography": "Number: text-4xl font-black tracking-tight; Label: text-sm font-medium text-gray-500 uppercase tracking-wider"
+    },
+    "progress_bar": {
+      "style": "h-3 rounded-full bg-gray-100 overflow-hidden",
+      "fill": "h-full rounded-full transition-all duration-500 ease-out"
+    },
+    "button": {
+      "primary": "bg-black text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-gray-900 active:scale-95 transition-all",
+      "secondary": "bg-white text-black border border-gray-200 px-6 py-3 rounded-full font-bold hover:bg-gray-50 active:scale-95 transition-all",
+      "icon": "p-3 rounded-full bg-gray-100 hover:bg-gray-200 active:scale-95"
+    },
+    "input": {
+      "style": "bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+    }
+  },
+  "assets": {
+    "icons": "lucide-react-native",
+    "charts": "react-native-chart-kit",
+    "fonts": [
+      "BarlowCondensed-Bold",
+      "BarlowCondensed-Black",
+      "Inter-Regular",
+      "Inter-Medium",
+      "Inter-SemiBold"
+    ]
+  },
+  "instructions_to_main_agent": [
+    "INSTALLATION: Run `yarn add nativewind tailwindcss` and `npx tailwindcss init`.",
+    "CONFIGURATION: Configure `tailwind.config.js` to include content paths: `['./app/**/*.{js,jsx,ts,tsx}', './components/**/*.{js,jsx,ts,tsx}']`.",
+    "CONFIGURATION: Add `plugins: ['nativewind/babel']` to `babel.config.js`.",
+    "FONTS: Load 'Barlow Condensed' and 'Inter' using `expo-font` in `app/_layout.tsx`.",
+    "API: Create a `services/api.ts` file to handle all API calls to the backend. Use `fetch`.",
+    "STATE: Use React Context or simple local state for data management. No Redux needed for this scope.",
+    "NAVIGATION: Use `expo-router`. Create `app/(tabs)` for main navigation: Dashboard, History, Add Data.",
+    "DATA ENTRY: Create a 'Quick Add' modal or screen that allows adding Bookings, Spins, and Misc Income easily.",
+    "VISUALIZATION: Use `react-native-chart-kit` for the 'Biweekly Progress' chart (Line or Bar chart).",
+    "RESPONSIVENESS: Use NativeWind classes (e.g., `md:grid-cols-2`) to handle Web vs Mobile layouts."
+  ],
+  "universal_guidelines": [
+    "Avoid 'AI Slop': Do not use generic gradients or default blue colors.",
+    "Micro-interactions: Add `active:scale-95` to all buttons.",
+    "Data-Test-IDs: Add `testID` prop to all interactive elements.",
+    "Error Handling: Show toast notifications (use `sonner` or custom toast) for API errors.",
+    "Loading States: Use skeleton loaders (gray pulsing blocks) instead of spinners for data fetching."
+  ],
+  "image_urls": {
+    "hero_bg": "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop",
+    "user_avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1780&auto=format&fit=crop"
+  }
+}

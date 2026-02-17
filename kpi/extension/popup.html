@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 280px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0A0A0A; color: white; padding: 16px; }
+    h1 { font-size: 14px; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { background: #1a1a1a; padding: 12px; border-radius: 8px; }
+    .stat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 24px; font-weight: 900; margin-top: 4px; }
+    .btn { width: 100%; margin-top: 12px; padding: 10px; border: none; border-radius: 20px; font-weight: 600; cursor: pointer; }
+    .btn-call { background: #34C759; color: white; }
+    .btn-open { background: #333; color: white; margin-top: 8px; }
+    .settings { margin-top: 12px; padding-top: 12px; border-top: 1px solid #333; }
+    .settings input { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #333; background: #1a1a1a; color: white; font-size: 12px; }
+    .settings label { font-size: 10px; color: #888; display: block; margin-bottom: 4px; }
+    .error { color: #FF3B30; font-size: 11px; margin-top: 8px; }
+    .success { color: #34C759; font-size: 11px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h1>KPI TRACKER</h1>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Calls</div><div class="stat-value" id="calls">-</div></div>
+    <div class="stat"><div class="stat-label">Bookings</div><div class="stat-value" id="bookings">-</div></div>
+    <div class="stat"><div class="stat-label">Profit</div><div class="stat-value" id="profit">-</div></div>
+    <div class="stat"><div class="stat-label">Spins</div><div class="stat-value" id="spins">-</div></div>
+  </div>
+  <button class="btn btn-call" id="addCall">+ Add Call</button>
+  <button class="btn btn-open" id="openDashboard">Open Dashboard</button>
+  <div id="message"></div>
+  <div class="settings">
+    <label>Backend URL</label>
+    <input type="text" id="apiUrl" placeholder="https://your-app.onrender.com">
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

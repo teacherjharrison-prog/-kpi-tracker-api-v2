@@ -15,11 +15,14 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
+from backend.constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
 
+ROOT_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(ROOT_DIR / ".env")
 
-ROOT_DIR = Path(__file__).parent
-load_dotenv(ROOT_DIR / '.env')
+print("ROOT_DIR:", ROOT_DIR)
+print("ENV EXISTS:", (ROOT_DIR / ".env").exists())
+print("ENV VALUE:", os.environ.get("MONGO_URL"))
 
 # Configure logging early - needed throughout the file
 logging.basicConfig(
@@ -131,14 +134,14 @@ def check_feature_access(user: "User", feature: str) -> dict:
 
 # MongoDB connection
 mongo_url = os.environ.get('MONGO_URL')
+print("DEBUG MONGO_URL:", mongo_url)
+
 if not mongo_url:
     raise RuntimeError("MONGO_URL environment variable is required")
+
 db_name = os.environ.get('DB_NAME', 'kpi_tracker')
 client = AsyncIOMotorClient(mongo_url)
 db = client[db_name]
-
-app = FastAPI()
-api_router = APIRouter(prefix="/api")
 
 # =============================================================================
 # PERIOD LOGIC - Calendar-based, no week nonsense
@@ -1255,3 +1258,5 @@ async def shutdown_event():
     scheduler.shutdown()
     client.close()
     logger.info("Application shutdown complete")
+from constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
+

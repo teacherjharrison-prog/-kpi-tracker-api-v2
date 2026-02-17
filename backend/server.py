@@ -15,7 +15,7 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
+from .constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
 
 
 ROOT_DIR = Path(__file__).parent
@@ -130,10 +130,10 @@ def check_feature_access(user: "User", feature: str) -> dict:
     }
 
 # MongoDB connection
-mongo_url = os.environ.get('MONGO_URL')
+mongo_url = os.environ.get("MONGO_URL")
+print(f"DEBUG: MONGO_URL = {mongo_url}")  # Add this line
 if not mongo_url:
-    raise RuntimeError("MONGO_URL environment variable is required")
-db_name = os.environ.get('DB_NAME', 'kpi_tracker')
+    raise ValueError("MONGO_URL is not set in environment variables!")
 client = AsyncIOMotorClient(mongo_url)
 db = client[db_name]
 

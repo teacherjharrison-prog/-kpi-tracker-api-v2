@@ -31,14 +31,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-app = FastAPI()
+pp = FastAPI()
 api_router = APIRouter(prefix="/api")
 
-# =============================================================================
 # CORS - MUST BE FIRST (before any routes)
-# =============================================================================
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -1267,5 +1263,6 @@ async def shutdown_event():
     scheduler.shutdown()
     client.close()
     logger.info("Application shutdown complete")
-from constants import GOALS, SPIN_RULES, calculate_progress, is_on_track, get_status
 
+# Include router at the very end
+app.include_router(api_router)

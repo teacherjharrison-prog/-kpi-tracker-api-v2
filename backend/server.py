@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-pp = FastAPI()
+app = FastAPI()
 api_router = APIRouter(prefix="/api")
 
 # CORS - MUST BE FIRST (before any routes)
